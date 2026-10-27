@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Products | Product Store</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/products}">Product Store</a>
+    <div class="account">
+        <span th:text="${username}"></span>
+        <a class="button secondary" th:if="${isAdmin}" th:href="@{/products/new}">Add product</a>
+        <form th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="button secondary" type="submit">Sign out</button>
+        </form>
+    </div>
+</header>
+<main class="content">
+    <section class="page-heading">
+        <p class="eyebrow">CATALOG</p>
+        <h1>Find something you love</h1>
+        <p class="muted">Enter a voucher code to see your discounted price.</p>
+    </section>
+    <div class="notice" th:if="${success}" th:text="${success}"></div>
+    <div class="notice error" th:if="${voucherError}" th:text="${voucherError}"></div>
+    <div class="offer-card" th:if="${offer}">
+        <div>
+            <p class="eyebrow">VOUCHER APPLIED</p>
+            <h2 th:text="${offer.productName}"></h2>
+            <p>Code <strong th:text="${offer.voucherCode}"></strong> saved
+                <strong th:text="${offer.discount}"></strong>.</p>
+        </div>
+        <div class="price-summary">
+            <span class="old-price" th:text="${offer.originalPrice}"></span>
+            <strong th:text="${offer.discountedPrice}"></strong>
+        </div>
+    </div>
+    <section class="product-grid" th:if="${!#lists.isEmpty(products)}">
+        <article class="product-card" th:each="product : ${products}">
+            <p class="eyebrow" th:text="'PRODUCT ' + ${product.id}"></p>
+            <h2 th:text="${product.name}"></h2>
+            <p class="muted" th:text="${product.description}"></p>
+            <p class="product-price" th:text="${product.price}"></p>
+            <form class="voucher-form" th:action="@{/products/{id}/apply-voucher(id=${product.id})}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <label th:for="'voucher-' + ${product.id}">Voucher code</label>
+                <div class="input-row">
+                    <input th:id="'voucher-' + ${product.id}" name="voucherCode" placeholder="Enter code" required>
+                    <button type="submit">Apply</button>
+                </div>
+            </form>
+        </article>
+    </section>
+    <div class="empty-state" th:if="${#lists.isEmpty(products)}">
+        <h2>No products yet</h2>
+        <p class="muted" th:if="${isAdmin}">Add a product to get the catalog started.</p>
+        <p class="muted" th:unless="${isAdmin}">Check back soon for new products.</p>
+    </div>
+</main>
+</body>
+</html>

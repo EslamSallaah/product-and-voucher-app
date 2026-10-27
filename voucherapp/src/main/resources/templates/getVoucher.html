@@ -1,14 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>get voucher</title>
+    <title>Get a voucher</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
   </head>
   <body>
-    <form action="/showGetVoucher" method="post">
-      voucher code <input name="code" />
-      <input type="submit" value="Get voucher" />
-    </form>
+    <main class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/">Voucher app</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="/showGetVoucher">Get a voucher</a>
+          <a th:if="${isAdmin}" href="/showCreateVoucher">Create a voucher</a>
+        </nav>
+      </header>
+      <section class="card">
+        <p class="eyebrow">Voucher lookup</p>
+        <h1>Find your voucher</h1>
+        <p class="intro">Enter your voucher code to see its discount and expiration date.</p>
+        <p class="message" role="alert" th:if="${error}" th:text="${error}"></p>
+        <form th:action="@{/getVoucher}" method="post">
+          <label>Voucher code<input name="code" autocomplete="off" required></label>
+          <button type="submit">Get voucher</button>
+        </form>
+      </section>
+    </main>
   </body>
 </html>

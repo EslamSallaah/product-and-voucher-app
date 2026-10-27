@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>voucher details</title>
+    <title>Voucher details</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
-    <h2>
-        voucher Details
-    </h2>
-    code: <b th:text="${voucher.code}"></b> <br>
-    Discount: <b th:text="${voucher.discount}"></b> <br>
-    Expire date <b th:text="${voucher.expireDate}"></b><br>
+    <main class="page-shell">
+        <header class="site-header">
+            <a class="brand" href="/">Voucher app</a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="/showGetVoucher">Get another voucher</a>
+                <a href="/showCreateVoucher">Create a voucher</a>
+            </nav>
+        </header>
+        <section class="card">
+            <p class="eyebrow">Voucher lookup</p>
+            <h1>Voucher details</h1>
+            <div class="details">
+                <div class="detail-row"><span class="detail-label">Code</span><strong th:text="${voucher.code}"></strong></div>
+                <div class="detail-row"><span class="detail-label">Discount</span><strong th:text="${voucher.discount}"></strong></div>
+                <div class="detail-row"><span class="detail-label">Expiration date</span><strong th:text="${voucher.expire_date}"></strong></div>
+            </div>
+            <a class="button" href="/showGetVoucher">Look up another code</a>
+        </section>
+    </main>
 </body>
 </html>

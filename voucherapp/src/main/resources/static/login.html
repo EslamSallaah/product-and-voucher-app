@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <main class="auth-shell">
+        <section class="card auth-card">
+            <p class="eyebrow">Voucher app</p>
+            <h1>Welcome back</h1>
+            <p class="intro">Sign in with your email to continue.</p>
+            <p class="message" id="message" role="alert"></p>
+            <form action="/login" method="post">
+                <label>
+                    Email
+                    <input name="username" type="email" autocomplete="username" required>
+                </label>
+                <label>
+                    Password
+                    <input name="password" type="password" autocomplete="current-password" required>
+                </label>
+                <button type="submit">Sign in</button>
+            </form>
+            <p class="secondary-link">New here? <a href="/register.html">Create an account</a></p>
+        </section>
+    </main>
+    <script>
+        const parameters = new URLSearchParams(window.location.search);
+        if (parameters.has("error")) {
+            document.getElementById("message").textContent = "Invalid email or password.";
+        } else if (parameters.has("registered")) {
+            const message = document.getElementById("message");
+            message.textContent = "Account created. You can now sign in.";
+            message.classList.add("success-message");
+        }
+    </script>
+</body>
+</html>

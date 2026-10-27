@@ -1,17 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>voucher home</title>
+    <title>Voucher dashboard</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
-    <a href="/showCreateVoucher">create Voucher</a> <br>
-<a href="/showgetVoucher.html">get Voucher</a> <br>
-<a href="/logout">logout</a>
-
-<form name="logoutform" th:action="@{/logout}" method="post">
-    <input type="submit" value="sign out" />
-</form>
+    <main class="page-shell">
+        <header class="site-header">
+            <a class="brand" href="/">Voucher app</a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="/showGetVoucher">Get a voucher</a>
+                <a th:if="${isAdmin}" href="/showCreateVoucher">Create a voucher</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Sign out</button>
+                </form>
+            </nav>
+        </header>
+        <section class="card">
+            <p class="eyebrow">Dashboard</p>
+            <h1>Manage your vouchers</h1>
+            <p class="intro">Choose an action to get started.</p>
+            <div class="action-grid">
+                <article class="action-card">
+                    <h2>Look up a voucher</h2>
+                    <a class="button" href="/showGetVoucher">Enter voucher code</a>
+                </article>
+                <article class="action-card" th:if="${isAdmin}">
+                    <h2>Create a voucher</h2>
+                    <a class="button" href="/showCreateVoucher">Add a voucher</a>
+                </article>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

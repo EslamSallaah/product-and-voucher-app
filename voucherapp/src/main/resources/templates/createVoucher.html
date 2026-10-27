@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create voucher</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
-
-    <h2>
-        create voucher 
-    </h2>
-    
-    <form action="#" th:action="@{/saveVoucher}" method="post">
-code: <input name="code"/>
-discount: <input name="discount"/>
-expire date: <input name="expireDate"/>
-<input type="submit" value="save"/>
-
-
-    </form>
+    <main class="page-shell">
+        <header class="site-header">
+            <a class="brand" href="/">Voucher app</a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="/showGetVoucher">Get a voucher</a>
+                <a href="/showCreateVoucher">Create a voucher</a>
+            </nav>
+        </header>
+        <section class="card">
+            <p class="eyebrow">Voucher management</p>
+            <h1>Create a voucher</h1>
+            <p class="intro">Enter the voucher code, discount, and expiration date.</p>
+            <form th:action="@{/saveVoucher}" method="post">
+                <label>Voucher code<input name="code" required></label>
+                <label>Discount<input name="discount" type="number" min="0" step="0.01" required></label>
+                <label>Expiration date<input name="expire_date" type="date" required></label>
+                <button type="submit">Save voucher</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>

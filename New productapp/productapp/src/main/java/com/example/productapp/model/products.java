@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
 
 @Entity 
 public class products {
@@ -17,17 +16,6 @@ private long id;
 private String description;
 private String name;
 private BigDecimal price;
-
-@Transient
-private String vouchercode;
-
-    public String getVouchercode() {
-        return this.vouchercode;
-    }
-
-    public void setVouchercode(String vouchercode) {
-        this.vouchercode = vouchercode;
-    }
 
     public long getId() {
         return this.id;

@@ -17,17 +17,18 @@ public class WebSecurityConfig {
 
     @Bean 
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.formLogin(formLogin -> formLogin.disable());
+        http.formLogin(formLogin -> formLogin
+            .loginPage("/login.html")
+            .loginProcessingUrl("/login")
+            .defaultSuccessUrl("/showGetVoucher", true)
+            .failureUrl("/login.html?error=true")
+            .permitAll());
         http.httpBasic(httpBasic -> {});
         http.authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.GET, "/voucherapi/vouchers/**","/","/showGetVoucher","/getVoucher")
-            .hasAnyRole("USER", "ADMIN")
-            .requestMatchers(HttpMethod.GET, "/showCreateVoucher", "/createVoucher","/createResponse")
-            .hasAnyRole("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/voucherapi/vouchers","/saveVoucher")
-            .hasRole("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/getVoucher")
-            .hasAnyRole("USER", "ADMIN"));
+            .requestMatchers("/login.html", "/register.html", "/register", "/css/**", "/favicon.ico", "/favicon.svg").permitAll()
+            .requestMatchers(HttpMethod.GET, "/showCreateVoucher").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/saveVoucher", "/voucherapi/vouchers").hasRole("ADMIN")
+            .anyRequest().authenticated());
         http.csrf(csrf -> csrf.disable());  
         return http.build();
 

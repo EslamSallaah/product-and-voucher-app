@@ -1,43 +1,53 @@
 package com.example.productapp.RestController;
 
-import org.springframework.beans.factory.annotation.Value;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.productapp.repo.repo;
-import com.example.productapp.Dto.Voucher;
+import com.example.productapp.Dto.ApplyVoucherRequest;
+import com.example.productapp.Dto.ProductCreateRequest;
+import com.example.productapp.Dto.ProductOffer;
 import com.example.productapp.model.products;
+import com.example.productapp.service.ProductService;
 
 
-
-@RestController 
+@RestController
 @RequestMapping("/productapi")
 public class controller {
 
     private final repo productrepo;
+    private final ProductService productService;
 
-private final RestTemplate restTemplate;
-
-@Value("${voucher-service.url}")
-private String voucherServiceURL;
-
-    controller(repo productrepo, RestTemplate restTemplate) {
+    controller(repo productrepo, ProductService productService) {
         this.productrepo = productrepo;
-        this.restTemplate = restTemplate;
+        this.productService = productService;
+    }
+
+    @GetMapping("/products")
+    public List<products> list() {
+        return productrepo.findAll();
     }
 
     @PostMapping("/products")
-    public products create(@RequestBody products products) {
-        Voucher voucher= restTemplate.getForObject(voucherServiceURL +products.getVouchercode(),Voucher.class);
-        products.setPrice(products.getPrice().subtract(voucher.getDiscount()));
-        
-        return productrepo.save(products);
+    public products create(@RequestBody ProductCreateRequest request) {
+        return productService.create(request);
     }
-    
 
-
-
+    @PostMapping("/products/{id}/apply-voucher")
+    public ProductOffer applyVoucher(
+            @PathVariable long id,
+            @RequestBody ApplyVoucherRequest request) {
+        if (request == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Voucher code is required");
+        }
+        return productService.applyVoucher(id, request.voucherCode());
+    }
 }

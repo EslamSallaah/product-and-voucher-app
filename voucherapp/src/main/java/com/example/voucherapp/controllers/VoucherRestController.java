@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
 
 
 
@@ -28,8 +29,12 @@ public voucher create(@RequestBody voucher Voucher) {
 }
 
 @GetMapping("/{code}")
-public voucher getVoucher(@PathVariable("code") String code) {
-    return repo.findByCode(code);
+public ResponseEntity<voucher> getVoucher(@PathVariable("code") String code) {
+    voucher foundVoucher = repo.findByCode(code);
+    if (foundVoucher == null) {
+        return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(foundVoucher);
 }
 
 
