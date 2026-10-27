@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>
+        create voucher 
+    </h2>
+    
+    <form action="#" th:action="@{/saveVoucher}" method="post">
+code: <input name="code"/>
+discount: <input name="discount"/>
+expire date: <input name="expireDate"/>
+<input type="submit" value="save"/>
+
+
+    </form>
+</body>
+</html>
